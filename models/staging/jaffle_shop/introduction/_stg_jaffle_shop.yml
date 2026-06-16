@@ -13,8 +13,8 @@ models:
       - name: order_id
         description: Primary Key for the orders table
         tests:
-         - unique
-         - not_null
+          - unique
+          - not_null
       - name: order_status
         description: "{{ doc('order_status') }}"
         data_tests:
