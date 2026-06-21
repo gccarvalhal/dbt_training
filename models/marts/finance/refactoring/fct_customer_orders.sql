@@ -50,7 +50,7 @@ with
             ) as customer_sales_seq
         from paid_orders
     ),
-customer_lifetime_value as (
+    customer_lifetime_value as (
         select
             paid_orders.order_id,
             sum(paid_orders.total_amount_paid) over (

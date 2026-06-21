@@ -1,0 +1,530 @@
+    /*  Create a query combining results from all columns so that the user, or the 
+    test suite, can examine all at once.
+    */
+    
+    
+
+    /*  Create a CTE that wraps all the unioned subqueries that are created
+        in this for loop
+    */
+      with main as ( 
+
+    
+
+    /*  There will be one audit_query subquery for each column
+    */
+    ( with a_query as (
+          
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from "ANALYTICS"."DBT_GCARVALHAL"."INT_ORDERS"
+  
+),
+
+b_query as (
+    
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from ANALYTICS.dbt_gcarvalhal.fct_customer_orders
+  
+)
+    select
+        coalesce(a_query.dbt_audit_helper_pk, b_query.dbt_audit_helper_pk) as primary_key,
+
+        
+            'ORDER_ID' as column_name,
+        
+
+        coalesce(
+            a_query.ORDER_ID = b_query.ORDER_ID and 
+                a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null,
+            (a_query.ORDER_ID is null and b_query.ORDER_ID is null),
+            false
+        ) as perfect_match,
+        a_query.ORDER_ID is null and a_query.dbt_audit_helper_pk is not null as null_in_a,
+        b_query.ORDER_ID is null and b_query.dbt_audit_helper_pk is not null as null_in_b,
+        a_query.dbt_audit_helper_pk is null as missing_from_a,
+        b_query.dbt_audit_helper_pk is null as missing_from_b,
+        coalesce(
+            a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null and 
+            -- ensure that neither value is missing before considering it a conflict
+            (
+                a_query.ORDER_ID != b_query.ORDER_ID or -- two not-null values that do not match
+                (a_query.ORDER_ID is not null and b_query.ORDER_ID is null) or -- null in b and not null in a
+                (a_query.ORDER_ID is null and b_query.ORDER_ID is not null) -- null in a and not null in b
+            ), 
+            false
+        ) as conflicting_values
+        -- considered a conflict if the values do not match AND at least one of the values is not null.
+
+    from a_query
+
+    full outer join b_query on (a_query.dbt_audit_helper_pk = b_query.dbt_audit_helper_pk)
+
+
+
+ )
+
+    
+
+      union all
+
+    
+
+  
+
+    
+
+    /*  Create a query combining results from all columns so that the user, or the 
+    test suite, can examine all at once.
+    */
+    
+    
+
+    /*  There will be one audit_query subquery for each column
+    */
+    ( with a_query as (
+          
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from "ANALYTICS"."DBT_GCARVALHAL"."INT_ORDERS"
+  
+),
+
+b_query as (
+    
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from ANALYTICS.dbt_gcarvalhal.fct_customer_orders
+  
+)
+    select
+        coalesce(a_query.dbt_audit_helper_pk, b_query.dbt_audit_helper_pk) as primary_key,
+
+        
+            'CUSTOMER_ID' as column_name,
+        
+
+        coalesce(
+            a_query.CUSTOMER_ID = b_query.CUSTOMER_ID and 
+                a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null,
+            (a_query.CUSTOMER_ID is null and b_query.CUSTOMER_ID is null),
+            false
+        ) as perfect_match,
+        a_query.CUSTOMER_ID is null and a_query.dbt_audit_helper_pk is not null as null_in_a,
+        b_query.CUSTOMER_ID is null and b_query.dbt_audit_helper_pk is not null as null_in_b,
+        a_query.dbt_audit_helper_pk is null as missing_from_a,
+        b_query.dbt_audit_helper_pk is null as missing_from_b,
+        coalesce(
+            a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null and 
+            -- ensure that neither value is missing before considering it a conflict
+            (
+                a_query.CUSTOMER_ID != b_query.CUSTOMER_ID or -- two not-null values that do not match
+                (a_query.CUSTOMER_ID is not null and b_query.CUSTOMER_ID is null) or -- null in b and not null in a
+                (a_query.CUSTOMER_ID is null and b_query.CUSTOMER_ID is not null) -- null in a and not null in b
+            ), 
+            false
+        ) as conflicting_values
+        -- considered a conflict if the values do not match AND at least one of the values is not null.
+
+    from a_query
+
+    full outer join b_query on (a_query.dbt_audit_helper_pk = b_query.dbt_audit_helper_pk)
+
+
+
+ )
+
+    
+
+      union all
+
+    
+
+  
+
+    
+
+    /*  Create a query combining results from all columns so that the user, or the 
+    test suite, can examine all at once.
+    */
+    
+    
+
+    /*  There will be one audit_query subquery for each column
+    */
+    ( with a_query as (
+          
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from "ANALYTICS"."DBT_GCARVALHAL"."INT_ORDERS"
+  
+),
+
+b_query as (
+    
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from ANALYTICS.dbt_gcarvalhal.fct_customer_orders
+  
+)
+    select
+        coalesce(a_query.dbt_audit_helper_pk, b_query.dbt_audit_helper_pk) as primary_key,
+
+        
+            'VALID_ORDER_DATE' as column_name,
+        
+
+        coalesce(
+            a_query.VALID_ORDER_DATE = b_query.VALID_ORDER_DATE and 
+                a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null,
+            (a_query.VALID_ORDER_DATE is null and b_query.VALID_ORDER_DATE is null),
+            false
+        ) as perfect_match,
+        a_query.VALID_ORDER_DATE is null and a_query.dbt_audit_helper_pk is not null as null_in_a,
+        b_query.VALID_ORDER_DATE is null and b_query.dbt_audit_helper_pk is not null as null_in_b,
+        a_query.dbt_audit_helper_pk is null as missing_from_a,
+        b_query.dbt_audit_helper_pk is null as missing_from_b,
+        coalesce(
+            a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null and 
+            -- ensure that neither value is missing before considering it a conflict
+            (
+                a_query.VALID_ORDER_DATE != b_query.VALID_ORDER_DATE or -- two not-null values that do not match
+                (a_query.VALID_ORDER_DATE is not null and b_query.VALID_ORDER_DATE is null) or -- null in b and not null in a
+                (a_query.VALID_ORDER_DATE is null and b_query.VALID_ORDER_DATE is not null) -- null in a and not null in b
+            ), 
+            false
+        ) as conflicting_values
+        -- considered a conflict if the values do not match AND at least one of the values is not null.
+
+    from a_query
+
+    full outer join b_query on (a_query.dbt_audit_helper_pk = b_query.dbt_audit_helper_pk)
+
+
+
+ )
+
+    
+
+      union all
+
+    
+
+  
+
+    
+
+    /*  Create a query combining results from all columns so that the user, or the 
+    test suite, can examine all at once.
+    */
+    
+    
+
+    /*  There will be one audit_query subquery for each column
+    */
+    ( with a_query as (
+          
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from "ANALYTICS"."DBT_GCARVALHAL"."INT_ORDERS"
+  
+),
+
+b_query as (
+    
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from ANALYTICS.dbt_gcarvalhal.fct_customer_orders
+  
+)
+    select
+        coalesce(a_query.dbt_audit_helper_pk, b_query.dbt_audit_helper_pk) as primary_key,
+
+        
+            'ORDER_PLACED_AT' as column_name,
+        
+
+        coalesce(
+            a_query.ORDER_PLACED_AT = b_query.ORDER_PLACED_AT and 
+                a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null,
+            (a_query.ORDER_PLACED_AT is null and b_query.ORDER_PLACED_AT is null),
+            false
+        ) as perfect_match,
+        a_query.ORDER_PLACED_AT is null and a_query.dbt_audit_helper_pk is not null as null_in_a,
+        b_query.ORDER_PLACED_AT is null and b_query.dbt_audit_helper_pk is not null as null_in_b,
+        a_query.dbt_audit_helper_pk is null as missing_from_a,
+        b_query.dbt_audit_helper_pk is null as missing_from_b,
+        coalesce(
+            a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null and 
+            -- ensure that neither value is missing before considering it a conflict
+            (
+                a_query.ORDER_PLACED_AT != b_query.ORDER_PLACED_AT or -- two not-null values that do not match
+                (a_query.ORDER_PLACED_AT is not null and b_query.ORDER_PLACED_AT is null) or -- null in b and not null in a
+                (a_query.ORDER_PLACED_AT is null and b_query.ORDER_PLACED_AT is not null) -- null in a and not null in b
+            ), 
+            false
+        ) as conflicting_values
+        -- considered a conflict if the values do not match AND at least one of the values is not null.
+
+    from a_query
+
+    full outer join b_query on (a_query.dbt_audit_helper_pk = b_query.dbt_audit_helper_pk)
+
+
+
+ )
+
+    
+
+      union all
+
+    
+
+  
+
+    
+
+    /*  Create a query combining results from all columns so that the user, or the 
+    test suite, can examine all at once.
+    */
+    
+    
+
+    /*  There will be one audit_query subquery for each column
+    */
+    ( with a_query as (
+          
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from "ANALYTICS"."DBT_GCARVALHAL"."INT_ORDERS"
+  
+),
+
+b_query as (
+    
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from ANALYTICS.dbt_gcarvalhal.fct_customer_orders
+  
+)
+    select
+        coalesce(a_query.dbt_audit_helper_pk, b_query.dbt_audit_helper_pk) as primary_key,
+
+        
+            'ORDER_STATUS' as column_name,
+        
+
+        coalesce(
+            a_query.ORDER_STATUS = b_query.ORDER_STATUS and 
+                a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null,
+            (a_query.ORDER_STATUS is null and b_query.ORDER_STATUS is null),
+            false
+        ) as perfect_match,
+        a_query.ORDER_STATUS is null and a_query.dbt_audit_helper_pk is not null as null_in_a,
+        b_query.ORDER_STATUS is null and b_query.dbt_audit_helper_pk is not null as null_in_b,
+        a_query.dbt_audit_helper_pk is null as missing_from_a,
+        b_query.dbt_audit_helper_pk is null as missing_from_b,
+        coalesce(
+            a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null and 
+            -- ensure that neither value is missing before considering it a conflict
+            (
+                a_query.ORDER_STATUS != b_query.ORDER_STATUS or -- two not-null values that do not match
+                (a_query.ORDER_STATUS is not null and b_query.ORDER_STATUS is null) or -- null in b and not null in a
+                (a_query.ORDER_STATUS is null and b_query.ORDER_STATUS is not null) -- null in a and not null in b
+            ), 
+            false
+        ) as conflicting_values
+        -- considered a conflict if the values do not match AND at least one of the values is not null.
+
+    from a_query
+
+    full outer join b_query on (a_query.dbt_audit_helper_pk = b_query.dbt_audit_helper_pk)
+
+
+
+ )
+
+    
+
+      union all
+
+    
+
+  
+
+    
+
+    /*  Create a query combining results from all columns so that the user, or the 
+    test suite, can examine all at once.
+    */
+    
+    
+
+    /*  There will be one audit_query subquery for each column
+    */
+    ( with a_query as (
+          
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from "ANALYTICS"."DBT_GCARVALHAL"."INT_ORDERS"
+  
+),
+
+b_query as (
+    
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from ANALYTICS.dbt_gcarvalhal.fct_customer_orders
+  
+)
+    select
+        coalesce(a_query.dbt_audit_helper_pk, b_query.dbt_audit_helper_pk) as primary_key,
+
+        
+            'TOTAL_AMOUNT_PAID' as column_name,
+        
+
+        coalesce(
+            a_query.TOTAL_AMOUNT_PAID = b_query.TOTAL_AMOUNT_PAID and 
+                a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null,
+            (a_query.TOTAL_AMOUNT_PAID is null and b_query.TOTAL_AMOUNT_PAID is null),
+            false
+        ) as perfect_match,
+        a_query.TOTAL_AMOUNT_PAID is null and a_query.dbt_audit_helper_pk is not null as null_in_a,
+        b_query.TOTAL_AMOUNT_PAID is null and b_query.dbt_audit_helper_pk is not null as null_in_b,
+        a_query.dbt_audit_helper_pk is null as missing_from_a,
+        b_query.dbt_audit_helper_pk is null as missing_from_b,
+        coalesce(
+            a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null and 
+            -- ensure that neither value is missing before considering it a conflict
+            (
+                a_query.TOTAL_AMOUNT_PAID != b_query.TOTAL_AMOUNT_PAID or -- two not-null values that do not match
+                (a_query.TOTAL_AMOUNT_PAID is not null and b_query.TOTAL_AMOUNT_PAID is null) or -- null in b and not null in a
+                (a_query.TOTAL_AMOUNT_PAID is null and b_query.TOTAL_AMOUNT_PAID is not null) -- null in a and not null in b
+            ), 
+            false
+        ) as conflicting_values
+        -- considered a conflict if the values do not match AND at least one of the values is not null.
+
+    from a_query
+
+    full outer join b_query on (a_query.dbt_audit_helper_pk = b_query.dbt_audit_helper_pk)
+
+
+
+ )
+
+    
+
+      union all
+
+    
+
+  
+
+    
+
+    /*  Create a query combining results from all columns so that the user, or the 
+    test suite, can examine all at once.
+    */
+    
+    
+
+    /*  There will be one audit_query subquery for each column
+    */
+    ( with a_query as (
+          
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from "ANALYTICS"."DBT_GCARVALHAL"."INT_ORDERS"
+  
+),
+
+b_query as (
+    
+    select
+      *,
+      order_id as dbt_audit_helper_pk
+    from ANALYTICS.dbt_gcarvalhal.fct_customer_orders
+  
+)
+    select
+        coalesce(a_query.dbt_audit_helper_pk, b_query.dbt_audit_helper_pk) as primary_key,
+
+        
+            'PAYMENT_FINALIZED_DATE' as column_name,
+        
+
+        coalesce(
+            a_query.PAYMENT_FINALIZED_DATE = b_query.PAYMENT_FINALIZED_DATE and 
+                a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null,
+            (a_query.PAYMENT_FINALIZED_DATE is null and b_query.PAYMENT_FINALIZED_DATE is null),
+            false
+        ) as perfect_match,
+        a_query.PAYMENT_FINALIZED_DATE is null and a_query.dbt_audit_helper_pk is not null as null_in_a,
+        b_query.PAYMENT_FINALIZED_DATE is null and b_query.dbt_audit_helper_pk is not null as null_in_b,
+        a_query.dbt_audit_helper_pk is null as missing_from_a,
+        b_query.dbt_audit_helper_pk is null as missing_from_b,
+        coalesce(
+            a_query.dbt_audit_helper_pk is not null and b_query.dbt_audit_helper_pk is not null and 
+            -- ensure that neither value is missing before considering it a conflict
+            (
+                a_query.PAYMENT_FINALIZED_DATE != b_query.PAYMENT_FINALIZED_DATE or -- two not-null values that do not match
+                (a_query.PAYMENT_FINALIZED_DATE is not null and b_query.PAYMENT_FINALIZED_DATE is null) or -- null in b and not null in a
+                (a_query.PAYMENT_FINALIZED_DATE is null and b_query.PAYMENT_FINALIZED_DATE is not null) -- null in a and not null in b
+            ), 
+            false
+        ) as conflicting_values
+        -- considered a conflict if the values do not match AND at least one of the values is not null.
+
+    from a_query
+
+    full outer join b_query on (a_query.dbt_audit_helper_pk = b_query.dbt_audit_helper_pk)
+
+
+
+ )
+
+    
+
+    ),
+
+        final as (
+          select
+            upper(column_name) as column_name,
+            sum(case when perfect_match then 1 else 0 end) as perfect_match,
+            sum(case when null_in_a then 1 else 0 end) as null_in_a,
+            sum(case when null_in_b then 1 else 0 end) as null_in_b,
+            sum(case when missing_from_a then 1 else 0 end) as missing_from_a,
+            sum(case when missing_from_b then 1 else 0 end) as missing_from_b,
+            sum(case when conflicting_values then 1 else 0 end) as conflicting_values
+          from main
+          group by 1
+          order by column_name
+        )
+
+    ---- select * from final
+    select * from main
+    where column_name = 'ORDER_VALUE_DOLLARS'
+    and perfect_match = false
+
+    
+
+  
+    
+
+
