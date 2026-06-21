@@ -24,3 +24,17 @@ functions:
         data_type: number
     returns:
       data_type: string
+
+  - name: create_email
+    description: Generates a company email with a customer name and id
+    config:
+      schema: 
+      database: ANALYTICS
+      volatility: deterministic
+    arguments:
+      - name: first_name
+        data_type: varchar
+      - name: id
+        data_type: number(38,0)
+    returns:
+      data_type: varchar
