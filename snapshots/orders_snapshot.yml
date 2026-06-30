@@ -4,6 +4,7 @@ snapshots:
     description: A snapshot of the orders table
     config:
       database: analytics
+      schema: snapshots
       strategy: check
       unique_key: id
       check_cols: ['id', 'user_id', 'order_date', 'status']
