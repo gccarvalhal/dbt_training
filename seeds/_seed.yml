@@ -8,3 +8,6 @@ seeds:
         tests:
           - unique
           - not_null
+    config:
+      grants: 
+        select: ['transformer', 'public']
