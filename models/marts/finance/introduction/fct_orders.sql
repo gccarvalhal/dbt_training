@@ -1,6 +1,8 @@
 {{
     config(
-        materialized='incremental'
+        materialized='incremental',
+        incremental_strategy = 'delete+insert',
+        unique_key = 'order_id'
     )
 }}
 with orders as (
