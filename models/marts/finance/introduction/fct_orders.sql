@@ -1,8 +1,15 @@
 {{
     config(
         materialized='incremental',
-        incremental_strategy = 'delete+insert',
-        unique_key = 'order_id'
+        incremental_strategy = 'insert_overwrite',
+        unique_key = 'order_id',
+        cluster_by = ['date_day'],
+{#         used for big query #}
+        partition_by = {
+            'field' = 'order_date',
+            'date_type' = 'date',
+            'granularity' = 'day'
+        }
     )
 }}
 with orders as (
