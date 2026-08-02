@@ -40,3 +40,7 @@ models:
       +materialized: view
     marts: 
       +materialized: table
+      
+  # O NOME DO PACOTE DEVE FICAR ALINHADO COM O NOME DO PROJETO
+  snowflake_spend:
+    +enabled: true
