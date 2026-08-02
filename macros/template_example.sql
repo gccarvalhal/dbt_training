@@ -1,18 +1,19 @@
-{% macro template_example(args) %}
+{% macro template_example() %}
     {% set query %}
         select true as boolean
     {% endset %}
 
-    -- Set a fallback default for parse time when execute is False
-    {% set results = false %}
+    {# 1. Create a namespace with a default value for parse time #}
+    {% set ns = namespace(results=false) %}
 
     {% if execute %}
         {% set results_table = run_query(query) %}
-        {% set results = results_table.columns[0].values[0] %}
-        {{ log('SQL results: ' ~ results, info=True) }}
+        {# 2. Access the 1st row of the 1st column directly #}
+        {% set ns.results = results_table.columns[0][0] %}
+        {{ log('SQL results: ' ~ ns.results, info=True) }}
     {% endif %}
 
-    -- Keep the return SQL outside the execute block so dbt can parse it
-    select {{ results }} as is_real
-    from a_real_table
+    {# 3. Access the namespace property outside the block #}
+    select {{ ns.results }} as is_real
+
 {% endmacro %}
